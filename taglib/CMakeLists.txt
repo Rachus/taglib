@@ -24,8 +24,6 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/s3m
   ${CMAKE_CURRENT_SOURCE_DIR}/it
   ${CMAKE_CURRENT_SOURCE_DIR}/xm
-  ${CMAKE_CURRENT_SOURCE_DIR}/ebml
-  ${CMAKE_CURRENT_SOURCE_DIR}/ebml/matroska
 )
 
 if(ZLIB_FOUND)
@@ -133,12 +131,6 @@ set(tag_HDRS
   s3m/s3mproperties.h
   xm/xmfile.h
   xm/xmproperties.h
-  ebml/ebmlfile.h
-  ebml/ebmlelement.h
-  ebml/ebmlconstants.h
-  ebml/matroska/ebmlmatroskafile.h
-  ebml/matroska/ebmlmatroskaconstants.h
-  ebml/matroska/ebmlmatroskaaudio.h
 )
 
 set(mpeg_SRCS
