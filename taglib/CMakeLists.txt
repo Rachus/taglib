@@ -306,22 +306,11 @@ set(toolkit_SRCS
   toolkit/unicode.cpp
 )
 
-set(ebml_SRCS
-  ebml/ebmlfile.cpp
-  ebml/ebmlelement.cpp
-)
-
-set(matroska_SRCS
-  ebml/matroska/ebmlmatroskafile.cpp
-  ebml/matroska/ebmlmatroskaaudio.cpp
-)
-
 set(tag_LIB_SRCS
   ${mpeg_SRCS} ${id3v1_SRCS} ${id3v2_SRCS} ${frames_SRCS} ${ogg_SRCS}
   ${vorbis_SRCS} ${oggflacs_SRCS} ${mpc_SRCS} ${ape_SRCS} ${toolkit_SRCS} ${flacs_SRCS}
   ${wavpack_SRCS} ${speex_SRCS} ${trueaudio_SRCS} ${riff_SRCS} ${aiff_SRCS} ${wav_SRCS}
   ${asf_SRCS} ${mp4_SRCS} ${mod_SRCS} ${s3m_SRCS} ${it_SRCS} ${xm_SRCS} ${opus_SRCS}
-  ${ebml_SRCS} ${matroska_SRCS}
   tag.cpp
   tagunion.cpp
   fileref.cpp
