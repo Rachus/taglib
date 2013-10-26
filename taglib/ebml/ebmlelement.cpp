@@ -222,78 +222,46 @@ public:
     offset_t fullsize = size + data - position;
     // Should fit in the place where the old header was.
     ByteVector voidHeader = makeHeader(id, fullsize);
-    document->seek(position);
-    document->write(voidHeader);
     id = Void;
     size = fullsize - voidHeader.size();
     data = position + voidHeader.size();
     populated = true;
     valid = true;
 
+    offset_t writePosition = position;
+
     // 2.:
     if(parent) {
       offset_t afterEnd = data + size;
-      bool foundVoid = false;
+      bool foundVoid;
       do {
+        foundVoid = false;
         // a):
-        for(List<Element *>::Iterator i = children.begin(); i != children.end(); ++i) {
+        for(List<Element *>::Iterator i = children.begin(); i != children.end() && !foundVoid; ++i) {
           Element *current = *i;
+          // b):
           if(current->position == afterEnd) {
-            // [...][V][current][...]
+            // [...][this][current][...]
+            foundVoid = true;
           }
           else if(position == current->data + current->size) {
-            // [...][current][V][...]
+            // [...][current][this][...]
+            writePosition = current->d->position;
+            foundVoid = true;
+          }
+
+          if(foundVoid) {
+            size += current->d->size + current->d->data - current->d->position;
+            children.erase(i);
           }
         }
+      // c):
       } while(foundVoid);
     }
-    /*
-    if(parent) {
-      // Also remove all children.
-      children.clear();
-      id = Void;
 
-      offset_t next_pos = data + size;
-      Element* next_void;
-      ByteVector header;
-      offset_t fullsize;
-      do {
-        next_void = 0;
-        // Void elements have the same parent and document.
-        for(List<Element *>::Iterator i = children.begin(); i != children.end(); ++i) {
-          Element *current = *i;
-          // Case: This is the first element.
-          if(current->position == next_pos) {
-            next_void = *i;
-            fullsize = next_pos + current->size - position;
-            header = makeHeader(id, fullsize);
-            if(header == ByteVector::null)
-              return;
-            data = position + header.size();
-            break;
-          }
-          // Case: This is the second element.
-          else if(position == current->data + current->size) {
-            next_void = *i;
-            fullsize = next_pos - current->position;
-            header = makeHeader(id, fullsize);
-            if(header == ByteVector::null)
-              return;
-            position = current->position;
-            data = position + header.size();
-            break;
-          }
-        }
-        size = fullsize - header.size();
-        data = position + header.size();
-        populated = true;
-        document->seek(position);
-        document->writeBlock(header);
-        valid = true;
-        // Clear ressources of the old element.
-//        parent->
-      } while(next_void);
-    }*/
+    voidHeader = makeHeader(id, size + voidHeader.size());
+    document->seek(writePosition);
+    document->write(voidHeader);
   }
 };
 
@@ -445,7 +413,7 @@ bool EBML::Element::removeChild(Element *element, bool useVoid)
     d->makeVoid();
   }
   else {
-
+    // TODO
   }
   return true;
 }
