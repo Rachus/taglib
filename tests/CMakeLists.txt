@@ -24,6 +24,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_SOURCE_DIR}/../taglib/s3m
   ${CMAKE_CURRENT_SOURCE_DIR}/../taglib/it
   ${CMAKE_CURRENT_SOURCE_DIR}/../taglib/xm
+  ${CMAKE_CURRENT_SOURCE_DIR}/../taglib/ebml
 )
 
 SET(test_runner_SRCS
@@ -64,6 +65,7 @@ SET(test_runner_SRCS
   test_xm.cpp
   test_mpc.cpp
   test_opus.cpp
+  test_ebml.cpp
 )
 
 INCLUDE_DIRECTORIES(${CPPUNIT_INCLUDE_DIR})
